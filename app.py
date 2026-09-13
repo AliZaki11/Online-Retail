@@ -1,8 +1,3 @@
-# ============================================================
-# Online Retail Customer Segmentation
-# RFM + Behavioral Features + K-Means
-# ============================================================
-
 import os
 import joblib
 import numpy as np
@@ -49,6 +44,7 @@ def load_model():
 
 
 try:
+
     artifacts = load_model()
 
 except Exception as e:
@@ -112,18 +108,21 @@ with st.expander("ℹ️ Model Information"):
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
+
         st.metric(
             "Algorithm",
             "K-Means"
         )
 
     with col2:
+
         st.metric(
             "Clusters",
             model.n_clusters
         )
 
     with col3:
+
         st.metric(
             "Features",
             len(features)
@@ -499,6 +498,19 @@ if predict:
         st.info(recommendation)
 
 
+    # ========================================================
+    # Error Handling
+    # ========================================================
+
+    except Exception as e:
+
+        st.error(
+            "❌ Prediction failed."
+        )
+
+        st.exception(e)
+
+
 # ============================================================
 # 13. Footer
 # ============================================================
@@ -506,6 +518,5 @@ if predict:
 st.divider()
 
 st.caption(
-    "Made by Eng.Ali Ahmed Zaki "
-    
+    "Made by Eng.Ali Ahmed Zaki"
 )
