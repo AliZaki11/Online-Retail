@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -409,7 +408,5 @@ st.divider()
 st.caption(
     "Online Retail Customer Segmentation | "
     "RFM + K-Means | "
-    "Made by Eng Ali Zaki"
-)
-```
+    "Made by Eng Ali Zaki")
 
