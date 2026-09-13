@@ -39,25 +39,39 @@ st.markdown(
 # 3. Model Path
 # ============================================================
 
+# Get the directory where app.py is located
+BASE_DIR = os.path.dirname(
+    os.path.abspath(__file__)
+)
+
+# The model is located in the same directory as app.py
 MODEL_PATH = os.path.join(
     BASE_DIR,
     "Online-retail.joblib"
 )
 
+
 # ============================================================
-# 4. Load Model
+# 4. Load Saved Model
 # ============================================================
 
 @st.cache_resource
 def load_model():
 
-    if not os.path.exists(MODEL_PATH):
+    # Check whether the model file exists
+    if not os.path.isfile(MODEL_PATH):
+
         raise FileNotFoundError(
             f"Model file not found: {MODEL_PATH}"
         )
 
+    # Load the saved joblib file
     return joblib.load(MODEL_PATH)
 
+
+# ============================================================
+# 5. Load Model Safely
+# ============================================================
 
 try:
 
@@ -65,7 +79,9 @@ try:
 
 except Exception as e:
 
-    st.error("❌ Failed to load the model.")
+    st.error(
+        "❌ Failed to load the model."
+    )
 
     st.exception(e)
 
@@ -73,7 +89,7 @@ except Exception as e:
 
 
 # ============================================================
-# 5. Extract Saved Components
+# 6. Extract Saved Model Components
 # ============================================================
 
 model = artifacts["model"]
@@ -99,10 +115,12 @@ reference_date = artifacts.get(
 
 
 # ============================================================
-# 6. Sidebar - Model Information
+# 7. Sidebar - Model Information
 # ============================================================
 
-st.sidebar.header("⚙️ Model Information")
+st.sidebar.header(
+    "⚙️ Model Information"
+)
 
 st.sidebar.write(
     "**Algorithm:** K-Means"
@@ -128,19 +146,26 @@ if reference_date is not None:
 
 
 # ============================================================
-# 7. Customer Input
+# 8. Customer Input Section
 # ============================================================
 
-st.header("👤 Customer RFM Information")
+st.header(
+    "👤 Customer RFM Information"
+)
 
 st.write(
-    "Enter the customer's RFM values to predict "
-    "the customer segment."
+    "Enter the customer's RFM values "
+    "to predict the customer segment."
 )
 
 
+# Create three columns
 col1, col2, col3 = st.columns(3)
 
+
+# ============================================================
+# 9. Recency Input
+# ============================================================
 
 with col1:
 
@@ -156,6 +181,10 @@ with col1:
     )
 
 
+# ============================================================
+# 10. Frequency Input
+# ============================================================
+
 with col2:
 
     frequency = st.number_input(
@@ -169,6 +198,10 @@ with col2:
         )
     )
 
+
+# ============================================================
+# 11. Monetary Input
+# ============================================================
 
 with col3:
 
@@ -184,7 +217,7 @@ with col3:
 
 
 # ============================================================
-# 8. Prediction Button
+# 12. Prediction Button
 # ============================================================
 
 predict_button = st.button(
@@ -194,7 +227,7 @@ predict_button = st.button(
 
 
 # ============================================================
-# 9. Prediction
+# 13. Prediction Process
 # ============================================================
 
 if predict_button:
@@ -202,7 +235,7 @@ if predict_button:
     try:
 
         # ----------------------------------------------------
-        # Create DataFrame
+        # Step 1: Create Input DataFrame
         # ----------------------------------------------------
 
         input_data = pd.DataFrame(
@@ -216,7 +249,7 @@ if predict_button:
 
 
         # ----------------------------------------------------
-        # Apply Log Transformation
+        # Step 2: Apply Log Transformation
         # ----------------------------------------------------
 
         if transformation == "log1p":
@@ -231,7 +264,7 @@ if predict_button:
 
 
         # ----------------------------------------------------
-        # Apply Saved Scaler
+        # Step 3: Apply Saved StandardScaler
         # ----------------------------------------------------
 
         input_scaled = scaler.transform(
@@ -240,7 +273,7 @@ if predict_button:
 
 
         # ----------------------------------------------------
-        # Predict Cluster
+        # Step 4: Predict Cluster
         # ----------------------------------------------------
 
         cluster = model.predict(
@@ -248,8 +281,12 @@ if predict_button:
         )[0]
 
 
+        # Convert NumPy integer to Python integer
+        cluster = int(cluster)
+
+
         # ----------------------------------------------------
-        # Convert Cluster → Business Segment
+        # Step 5: Convert Cluster to Business Segment
         # ----------------------------------------------------
 
         segment = segment_mapping.get(
@@ -262,7 +299,7 @@ if predict_button:
 
 
         # ====================================================
-        # 10. Prediction Result
+        # 14. Prediction Result
         # ====================================================
 
         st.success(
@@ -273,6 +310,10 @@ if predict_button:
         result_col1, result_col2 = st.columns(2)
 
 
+        # ----------------------------------------------------
+        # Cluster Result
+        # ----------------------------------------------------
+
         with result_col1:
 
             st.metric(
@@ -280,6 +321,10 @@ if predict_button:
                 value=str(cluster)
             )
 
+
+        # ----------------------------------------------------
+        # Segment Result
+        # ----------------------------------------------------
 
         with result_col2:
 
@@ -290,10 +335,12 @@ if predict_button:
 
 
         # ====================================================
-        # 11. RFM Summary
+        # 15. Customer RFM Profile
         # ====================================================
 
-        st.subheader("📋 Customer RFM Profile")
+        st.subheader(
+            "📋 Customer RFM Profile"
+        )
 
 
         rfm_summary = pd.DataFrame(
@@ -321,11 +368,17 @@ if predict_button:
 
 
         # ====================================================
-        # 12. Business Interpretation
+        # 16. Business Recommendation
         # ====================================================
 
-        st.subheader("💡 Business Recommendation")
+        st.subheader(
+            "💡 Business Recommendation"
+        )
 
+
+        # ----------------------------------------------------
+        # High Value Customers
+        # ----------------------------------------------------
 
         if segment == "High Value Customers":
 
@@ -343,6 +396,10 @@ if predict_button:
             )
 
 
+        # ----------------------------------------------------
+        # Loyal Customers
+        # ----------------------------------------------------
+
         elif segment == "Loyal Customers":
 
             st.info(
@@ -358,6 +415,10 @@ if predict_button:
                 """
             )
 
+
+        # ----------------------------------------------------
+        # At Risk Customers
+        # ----------------------------------------------------
 
         elif segment == "At Risk Customers":
 
@@ -375,6 +436,10 @@ if predict_button:
             )
 
 
+        # ----------------------------------------------------
+        # Other Segments
+        # ----------------------------------------------------
+
         else:
 
             st.info(
@@ -389,6 +454,10 @@ if predict_button:
             )
 
 
+    # ========================================================
+    # 17. Prediction Error Handling
+    # ========================================================
+
     except Exception as e:
 
         st.error(
@@ -399,7 +468,7 @@ if predict_button:
 
 
 # ============================================================
-# 13. Footer
+# 18. Footer
 # ============================================================
 
 st.divider()
@@ -407,5 +476,5 @@ st.divider()
 st.caption(
     "Online Retail Customer Segmentation | "
     "RFM + K-Means | "
-    "Made by Eng Ali Zaki")
-
+    "Made by Eng Ali Zaki"
+)
