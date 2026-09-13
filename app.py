@@ -40,10 +40,9 @@ st.markdown(
 # ============================================================
 
 MODEL_PATH = os.path.join(
-    "artifacts",
+    BASE_DIR,
     "Online-retail.joblib"
 )
-
 
 # ============================================================
 # 4. Load Model
