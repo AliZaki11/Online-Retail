@@ -686,19 +686,18 @@ footer .meta{font-size:12px;color:var(--text3);margin-top:12px}
     </ul>
   </div>
   <div class="icard ic-green">
-    
-<span class="icard-icon">🔁</span>
-<h4>Monitor & Re-evaluate Segmentation</h4>
-<p>
-  Customer behavior can change over time. Periodically review the segmentation
-  to ensure the clusters remain relevant and actionable.
-</p>
-<ul>
-  <li>Monitor segment size and behavioral drift</li>
-  <li>Re-evaluate the model when significant changes occur</li>
-  <li>Test alternative k values when finer segmentation is needed</li>
-</ul>
-    
+    <span class="icard-icon">🔁</span>
+    <h4>Re-run Segmentation Quarterly</h4>
+    <p>Silhouette score of 0.43 is solid but not perfect — customer behavior shifts over time, especially around
+    holidays. Refresh the model regularly to keep segment boundaries and campaigns accurate.</p>
+    <ul>
+      <li>Re-cluster quarterly with the same 13 features for consistency</li>
+      <li>Track segment size drift as an early business-health indicator</li>
+      <li>Consider testing k=4 to see if Regular splits into finer sub-groups</li>
+    </ul>
+  </div>
+</div>
+
 <div class="narrative reveal" style="margin-top:8px">
   <p><strong>Turning the roadmap into a quarterly plan</strong> — each priority below gets an owner, a concrete
   target, and a quarter to hit it by, not just a suggestion.</p>
@@ -795,7 +794,7 @@ footer .meta{font-size:12px;color:var(--text3);margin-top:12px}
 
 <footer>
   <div class="footer-logo">Online Retail Business · Customer Segmentation Report</div>
-  <div class="analyst">Analysis &amp; Design: <span>Ali Ahmed Zaki (على أحمد ذكى)</span></div>
+  <div class="analyst">Analysis &amp; Design: <span>Ali Ahmed Zaky (على أحمد ذكى)</span></div>
   <div style="font-size:13px;color:var(--text2);margin-top:4px">Business Intelligence Expert · خبير ذكاء أعمال</div>
   <div class="meta">Model: KMeans (k=3) · Silhouette Score: 0.432 · 909 customers from 38,209 raw transaction rows · 13 behavioral features · All figures in USD ($)</div>
 </footer>
